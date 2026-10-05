@@ -25,7 +25,7 @@ def get_params(fw_version: bytes, fingerprint):
 
 
 @pytest.mark.parametrize("fw_version", sorted(STEER_TO_ZERO_EPS_FW))
-def test_recognized_eps_firmware_enables_donor_capability(fw_version, empty_fingerprint):
+def test_recognized_eps_firmware_enables_donor_capability_but_keeps_validation_dashcam_only(fw_version, empty_fingerprint):
   CP = get_params(fw_version, empty_fingerprint)
 
   assert CP.carFingerprint == CAR.MAZDA_CX9
@@ -33,7 +33,8 @@ def test_recognized_eps_firmware_enables_donor_capability(fw_version, empty_fing
   assert CP.safetyConfigs[0].safetyParam & MazdaSafetyFlags.STEER_TO_ZERO_EPS
   assert CP.minSteerSpeed == 0.0
   assert CP.steerActuatorDelay == pytest.approx(0.14)
-  assert CP.dashcamOnly is False
+  # Validation branch deliberately blocks actuation while retaining donor-EPS detection/plumbing.
+  assert CP.dashcamOnly is True
   assert CP.wheelbase == pytest.approx(2.93)
   assert CP.steerRatio == pytest.approx(17.6)
 
