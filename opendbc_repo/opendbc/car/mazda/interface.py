@@ -29,6 +29,11 @@ class CarInterface(CarInterfaceBase):
     # verified steer-to-zero donor EPS is detected. Do not broadly enable legacy EPS firmware.
     ret.dashcamOnly = candidate not in (CAR.MAZDA_CX5_2022, CAR.MAZDA_CX9_2021) and not steer_to_zero
 
+    # First-install validation branch: keep the 2016-20 CX-9 non-actuating while still detecting
+    # and publishing the donor-EPS capability. Remove this gate after the dashcam validation drive.
+    if candidate == CAR.MAZDA_CX9:
+      ret.dashcamOnly = True
+
     ret.steerActuatorDelay = 0.14 if steer_to_zero else 0.1
     ret.steerLimitTimer = 0.8
 
