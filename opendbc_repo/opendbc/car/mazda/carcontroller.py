@@ -34,6 +34,11 @@ class CarController(CarControllerBase):
 
     self.driver_torque_samples.append(CS.out.steeringTorque)
 
+    if CS.lkas_rejected:
+      # Panda resets its steering rate-limit reference when it rejects a command. Match that
+      # state before calculating the next command so the normal limiter restarts from zero.
+      self.apply_torque_last = 0
+
     if CC.latActive:
       new_torque = int(round(CC.actuators.torque * steer_max))
 
