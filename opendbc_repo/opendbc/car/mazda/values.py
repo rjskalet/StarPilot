@@ -134,7 +134,6 @@ class Buttons:
 
 
 FW_QUERY_CONFIG = FwQueryConfig(
-  fw_version_regex=br"[A-Z0-9-]{11,16}\x00{8,13}",
   requests=[
     Request(
       [StdQueries.MANUFACTURER_SOFTWARE_VERSION_REQUEST],
